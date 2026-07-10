@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>RPS PharmaAgents — AI-Powered Pharmaceutical Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07090f;--bg2:#0c0f1a;--bg3:#111525;
+  --surface:#161c2e;--surface2:#1c2340;
+  --border:rgba(255,255,255,0.09);--border2:rgba(255,255,255,0.15);
+  --text:#eef0f8;--text2:#9aa3c2;--text3:#5e6a8a;
+  --accent:#7c3aed;--accent2:#a855f7;--accent3:#06b6d4;
+  --green:#10b981;--blue:#3b82f6;--amber:#f59e0b;--red:#ef4444;--pink:#ec4899;--teal:#14b8a6;
+  --radius:18px;--radius-sm:10px;
+  --shadow:0 4px 32px rgba(0,0,0,0.5);--shadow-lg:0 12px 60px rgba(0,0,0,0.7);
+  --transition:0.22s ease;
+  --glow-purple:0 0 40px rgba(124,58,237,0.35);--glow-cyan:0 0 40px rgba(6,182,212,0.3);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh;overflow-x:hidden}
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+
+/* ── HEADER ── */
+.header{position:sticky;top:0;z-index:100;background:rgba(7,9,15,0.88);backdrop-filter:blur(24px);border-bottom:1px solid rgba(124,58,237,0.18);box-shadow:0 1px 0 rgba(124,58,237,0.1),0 4px 24px rgba(0,0,0,0.4)}
+.header-inner{max-width:1200px;margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;gap:32px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-icon{font-size:24px}
+.logo-text{font-family:'Space Grotesk',sans-serif;font-size:18px;color:var(--text);letter-spacing:-0.3px}
+.logo-text strong{background:linear-gradient(135deg,#a855f7,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.nav{display:flex;align-items:center;gap:8px;margin-left:auto}
+.nav-link{color:var(--text2);text-decoration:none;font-size:14px;font-weight:500;padding:6px 14px;border-radius:8px;transition:var(--transition)}
+.nav-link:hover{color:var(--text);background:var(--surface)}
+.btn-share-all{background:linear-gradient(135deg,#7c3aed,#06b6d4);color:#fff;border:none;cursor:pointer;padding:8px 20px;border-radius:8px;font-size:13px;font-weight:600;transition:var(--transition);font-family:inherit;box-shadow:0 2px 12px rgba(124,58,237,0.4)}
+.btn-share-all:hover{opacity:0.9;transform:translateY(-1px);box-shadow:0 4px 20px rgba(124,58,237,0.55)}
+.hamburger{display:none;background:none;border:none;color:var(--text);font-size:22px;cursor:pointer;margin-left:auto}
+.mobile-menu{display:none;flex-direction:column;gap:4px;padding:12px 24px 16px;border-top:1px solid var(--border)}
+.mobile-menu.open{display:flex}
+.mobile-menu a{color:var(--text2);text-decoration:none;font-size:15px;padding:10px 12px;border-radius:8px;transition:var(--transition)}
+.mobile-menu a:hover{color:var(--text);background:var(--surface)}
+
+/* ── HERO ── */
+.hero{position:relative;overflow:hidden;padding:110px 24px 90px;text-align:center;min-height:620px;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(124,58,237,0.12) 0%,transparent 70%)}
+.hero-bg{position:absolute;inset:0;pointer-events:none}
+.hero-orb{position:absolute;border-radius:50%;filter:blur(90px);opacity:0.22;animation:float 8s ease-in-out infinite}
+.orb1{width:560px;height:560px;background:radial-gradient(circle,#7c3aed,#a855f7);top:-180px;left:-120px;animation-delay:0s}
+.orb2{width:440px;height:440px;background:radial-gradient(circle,#06b6d4,#3b82f6);top:-60px;right:-100px;animation-delay:2.5s}
+.orb3{width:380px;height:380px;background:radial-gradient(circle,#10b981,#14b8a6);bottom:-120px;left:38%;animation-delay:5s}
+.orb4{width:280px;height:280px;background:radial-gradient(circle,#ec4899,#f59e0b);bottom:-60px;right:10%;animation-delay:3.5s;opacity:0.14}
+@keyframes float{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-30px) scale(1.05)}}
+.hero-content{position:relative;z-index:1;max-width:760px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,rgba(124,58,237,0.18),rgba(6,182,212,0.12));border:1px solid rgba(168,85,247,0.35);color:#c4b5fd;font-size:13px;font-weight:600;padding:7px 18px;border-radius:100px;margin-bottom:28px;letter-spacing:0.4px;box-shadow:0 0 20px rgba(124,58,237,0.2),inset 0 1px 0 rgba(255,255,255,0.08)}
+.hero-title{font-family:'Space Grotesk',sans-serif;font-size:clamp(36px,6vw,64px);font-weight:700;line-height:1.1;letter-spacing:-1.5px;margin-bottom:20px}
+.gradient-text{background:linear-gradient(135deg,#a855f7 0%,#7c3aed 30%,#06b6d4 70%,#10b981 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 30px rgba(124,58,237,0.4))}
+.hero-subtitle{font-size:18px;color:var(--text2);max-width:580px;margin:0 auto 36px;line-height:1.7}
+.hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:48px}
+.btn-primary{background:linear-gradient(135deg,#7c3aed,#a855f7,#06b6d4);background-size:200% 200%;color:#fff;border:none;cursor:pointer;padding:15px 32px;border-radius:12px;font-size:15px;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;transition:all 0.3s ease;font-family:inherit;box-shadow:0 4px 24px rgba(124,58,237,0.45),0 0 0 1px rgba(168,85,247,0.2);letter-spacing:0.2px}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 36px rgba(124,58,237,0.6),0 0 0 1px rgba(168,85,247,0.3)}
+.btn-secondary{background:rgba(255,255,255,0.05);color:var(--text);border:1px solid rgba(255,255,255,0.15);cursor:pointer;padding:15px 32px;border-radius:12px;font-size:15px;font-weight:600;transition:var(--transition);font-family:inherit;backdrop-filter:blur(8px)}
+.btn-secondary:hover{background:rgba(124,58,237,0.12);border-color:rgba(168,85,247,0.5);box-shadow:0 0 20px rgba(124,58,237,0.2)}
+.hero-stats{display:flex;align-items:center;justify-content:center;gap:32px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:20px 40px;backdrop-filter:blur(12px);box-shadow:inset 0 1px 0 rgba(255,255,255,0.06)}
+.stat{display:flex;flex-direction:column;align-items:center}
+.stat-num{font-family:'Space Grotesk',sans-serif;font-size:34px;font-weight:800;background:linear-gradient(135deg,#a855f7,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-label{font-size:11px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-top:2px}
+.stat-divider{width:1px;height:44px;background:linear-gradient(to bottom,transparent,rgba(168,85,247,0.3),transparent)}
+
+/* ── SEARCH ── */
+.search-section{padding:48px 0 24px}
+.search-bar-wrap{position:relative;display:flex;align-items:center;background:var(--surface);border:1px solid rgba(168,85,247,0.2);border-radius:14px;padding:0 16px;margin-bottom:20px;transition:var(--transition);box-shadow:0 2px 16px rgba(0,0,0,0.3)}
+.search-bar-wrap:focus-within{border-color:rgba(168,85,247,0.6);box-shadow:0 0 0 3px rgba(124,58,237,0.15),0 4px 24px rgba(0,0,0,0.4)}
+.search-icon{font-size:18px;margin-right:10px;opacity:0.6}
+.search-input{flex:1;background:none;border:none;outline:none;color:var(--text);font-size:15px;font-family:inherit;padding:16px 0}
+.search-input::placeholder{color:var(--text3)}
+.search-clear{background:none;border:none;color:var(--text3);cursor:pointer;font-size:16px;padding:4px 8px;border-radius:6px;transition:var(--transition)}
+.search-clear:hover{color:var(--text);background:var(--surface2)}
+.filter-chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.chip{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:var(--text2);cursor:pointer;padding:8px 18px;border-radius:100px;font-size:13px;font-weight:500;transition:all 0.2s ease;font-family:inherit;backdrop-filter:blur(6px)}
+.chip:hover{border-color:rgba(168,85,247,0.5);color:var(--text);background:rgba(124,58,237,0.1);box-shadow:0 0 12px rgba(124,58,237,0.2)}
+.chip.active{background:linear-gradient(135deg,rgba(124,58,237,0.25),rgba(6,182,212,0.15));border-color:rgba(168,85,247,0.6);color:#c4b5fd;font-weight:700;box-shadow:0 0 16px rgba(124,58,237,0.25),inset 0 1px 0 rgba(255,255,255,0.08)}
+.results-count{font-size:13px;color:var(--text3)}
+
+/* ── AGENTS GRID ── */
+.agents-section{padding:8px 0 80px}
+.agents-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:20px}
+.agent-card{background:linear-gradient(160deg,var(--surface) 0%,rgba(22,28,46,0.95) 100%);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius);overflow:hidden;transition:transform 0.28s ease,box-shadow 0.28s ease,border-color 0.28s ease;display:flex;flex-direction:column;animation:fadeInUp 0.4s ease both;position:relative}
+.agent-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(168,85,247,0.4),rgba(6,182,212,0.4),transparent);opacity:0;transition:opacity 0.28s ease}
+.agent-card:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,0,0,0.6),0 0 0 1px rgba(168,85,247,0.2),var(--glow-purple);border-color:rgba(168,85,247,0.25)}
+.agent-card:hover::before{opacity:1}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.card-header{padding:24px;display:flex;align-items:flex-start;justify-content:space-between;position:relative;overflow:hidden}
+.card-header::after{content:'';position:absolute;inset:0;background:rgba(0,0,0,0.15)}
+.card-icon{font-size:36px;position:relative;z-index:1}
+.card-badge{background:rgba(0,0,0,0.25);color:#fff;font-size:10px;font-weight:800;padding:4px 12px;border-radius:100px;position:relative;z-index:1;letter-spacing:0.8px;text-transform:uppercase;backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.2);box-shadow:0 2px 8px rgba(0,0,0,0.3)}
+.card-body{padding:20px;flex:1}
+.card-title{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;margin-bottom:10px;color:var(--text)}
+.card-desc{font-size:14px;color:var(--text2);line-height:1.65;margin-bottom:14px}
+.card-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.tag{background:linear-gradient(135deg,rgba(124,58,237,0.15),rgba(6,182,212,0.1));border:1px solid rgba(168,85,247,0.25);color:#c4b5fd;font-size:11px;font-weight:600;padding:3px 11px;border-radius:100px;letter-spacing:0.3px;transition:var(--transition)}
+.agent-card:hover .tag{background:linear-gradient(135deg,rgba(124,58,237,0.25),rgba(6,182,212,0.18));border-color:rgba(168,85,247,0.45)}
+.card-capabilities{display:flex;flex-direction:column;gap:6px}
+.cap-item{font-size:13px;color:var(--text2)}
+.card-footer{padding:16px 20px;border-top:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,rgba(7,9,15,0.8),rgba(12,15,26,0.9));backdrop-filter:blur(4px)}
+.card-meta{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text3)}
+.status-dot{width:8px;height:8px;border-radius:50%;background:var(--text3)}
+.status-dot.active{background:var(--green);box-shadow:0 0 6px rgba(16,185,129,0.6);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+.card-actions{display:flex;gap:8px;align-items:center}
+.btn-launch{background:linear-gradient(135deg,#7c3aed,#a855f7,#06b6d4);background-size:200% 200%;color:#fff;border:none;cursor:pointer;padding:9px 20px;border-radius:9px;font-size:13px;font-weight:700;transition:all 0.25s ease;font-family:inherit;box-shadow:0 2px 12px rgba(124,58,237,0.4);letter-spacing:0.2px}
+.btn-launch:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(124,58,237,0.55)}
+.btn-share-card{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:var(--text3);cursor:pointer;width:36px;height:36px;border-radius:9px;font-size:14px;transition:var(--transition);display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.btn-share-card:hover{border-color:rgba(168,85,247,0.5);color:var(--text);background:rgba(124,58,237,0.15);box-shadow:0 0 12px rgba(124,58,237,0.25)}
+
+/* ── EMPTY STATE ── */
+.empty-state{text-align:center;padding:80px 24px}
+.empty-icon{font-size:56px;margin-bottom:16px}
+.empty-state h3{font-size:22px;margin-bottom:8px}
+.empty-state p{color:var(--text2);margin-bottom:24px}
+
+/* ── HOW IT WORKS ── */
+.how-section{padding:90px 0;background:linear-gradient(180deg,var(--bg2) 0%,rgba(12,15,26,0.95) 50%,var(--bg2) 100%);border-top:1px solid rgba(168,85,247,0.12);border-bottom:1px solid rgba(6,182,212,0.12);position:relative;overflow:hidden}
+.how-section::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(124,58,237,0.06) 0%,transparent 70%);pointer-events:none}
+.section-header{text-align:center;margin-bottom:56px}
+.section-title{font-family:'Space Grotesk',sans-serif;font-size:38px;font-weight:800;margin-bottom:12px;letter-spacing:-0.8px;background:linear-gradient(135deg,#e8eaf0 30%,#a855f7 70%,#06b6d4 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.section-sub{font-size:16px;color:var(--text2)}
+.steps-grid{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap}
+.step-card{background:linear-gradient(160deg,var(--surface),rgba(22,28,46,0.8));border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius);padding:36px 28px;text-align:center;flex:1;min-width:220px;max-width:280px;transition:all 0.28s ease;position:relative;overflow:hidden}
+.step-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#7c3aed,#06b6d4);opacity:0;transition:opacity 0.28s ease}
+.step-card:hover{border-color:rgba(168,85,247,0.3);transform:translateY(-6px);box-shadow:0 16px 48px rgba(0,0,0,0.5),0 0 0 1px rgba(168,85,247,0.15),var(--glow-purple)}
+.step-card:hover::after{opacity:1}
+.step-num{font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:800;background:linear-gradient(135deg,#a855f7,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:1.5px;margin-bottom:14px}
+.step-icon{font-size:40px;margin-bottom:16px}
+.step-card h3{font-size:18px;font-weight:700;margin-bottom:10px}
+.step-card p{font-size:14px;color:var(--text2);line-height:1.65}
+.step-arrow{font-size:28px;color:var(--text3);flex-shrink:0}
+
+/* ── FOOTER ── */
+.footer{padding:70px 0 0;background:linear-gradient(180deg,var(--bg2) 0%,#050710 100%);border-top:1px solid rgba(168,85,247,0.15);position:relative;overflow:hidden}
+.footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(124,58,237,0.5),rgba(6,182,212,0.5),transparent)}
+.footer-inner{display:flex;gap:48px;flex-wrap:wrap;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,0.06)}
+.footer-brand{flex:1;min-width:200px}
+.footer-brand .logo{margin-bottom:12px}
+.footer-brand p{font-size:14px;color:var(--text3);max-width:240px}
+.footer-links{display:flex;gap:48px;flex-wrap:wrap}
+.footer-col{display:flex;flex-direction:column;gap:10px}
+.footer-col h4{font-size:13px;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px}
+.footer-col a{font-size:14px;color:var(--text3);text-decoration:none;transition:var(--transition)}
+.footer-col a:hover{color:var(--text)}
+.footer-privacy{padding:20px 0 0;border-top:1px solid rgba(255,255,255,0.06);margin-top:8px}
+.privacy-statement{background:linear-gradient(135deg,rgba(124,58,237,0.08),rgba(6,182,212,0.05));border:1px solid rgba(168,85,247,0.15);border-radius:12px;padding:16px 20px;margin-bottom:16px}
+.privacy-statement h5{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;background:linear-gradient(135deg,#a855f7,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.privacy-statement p{font-size:12px;color:var(--text3);line-height:1.7;margin:0}
+.privacy-statement a{color:#a855f7;text-decoration:none;font-weight:500}
+.privacy-statement a:hover{color:#06b6d4}
+.footer-bottom{display:flex;align-items:center;justify-content:space-between;padding:16px 0 24px;flex-wrap:wrap;gap:12px}
+.footer-bottom p{font-size:13px;color:var(--text3)}
+.footer-bottom p strong{background:linear-gradient(135deg,#a855f7,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:700}
+.btn-share-footer{background:linear-gradient(135deg,rgba(124,58,237,0.15),rgba(6,182,212,0.1));border:1px solid rgba(168,85,247,0.3);color:#c4b5fd;cursor:pointer;padding:9px 18px;border-radius:9px;font-size:13px;font-weight:600;transition:var(--transition);font-family:inherit;backdrop-filter:blur(6px)}
+.btn-share-footer:hover{border-color:rgba(168,85,247,0.6);color:#fff;box-shadow:0 0 16px rgba(124,58,237,0.3)}
+
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity 0.25s ease}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{background:linear-gradient(160deg,var(--surface) 0%,rgba(12,15,26,0.98) 100%);border:1px solid rgba(168,85,247,0.25);border-radius:20px;padding:36px;max-width:560px;width:100%;position:relative;max-height:90vh;overflow-y:auto;transform:translateY(20px);transition:transform 0.28s ease;box-shadow:0 24px 80px rgba(0,0,0,0.7),0 0 0 1px rgba(168,85,247,0.1),var(--glow-purple)}
+.modal::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#7c3aed,#a855f7,#06b6d4,#10b981);border-radius:20px 20px 0 0}
+.modal-overlay.open .modal{transform:translateY(0)}
+.modal-close{position:absolute;top:16px;right:16px;background:var(--surface2);border:1px solid var(--border);color:var(--text2);cursor:pointer;width:32px;height:32px;border-radius:8px;font-size:14px;transition:var(--transition)}
+.modal-close:hover{color:var(--text);border-color:var(--border2)}
+.modal-icon{font-size:48px;margin-bottom:12px}
+.modal-title{font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700;margin-bottom:10px}
+.modal-desc{font-size:14px;color:var(--text2);margin-bottom:24px;line-height:1.65}
+.modal-chat{border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.chat-messages{min-height:200px;max-height:280px;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;background:var(--bg2)}
+.chat-msg{max-width:85%;padding:10px 14px;border-radius:12px;font-size:14px;line-height:1.55;animation:fadeInUp 0.2s ease}
+.chat-msg.user{background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+.chat-msg.agent{background:var(--surface);color:var(--text);align-self:flex-start;border-bottom-left-radius:4px;border:1px solid var(--border)}
+.chat-msg.typing{color:var(--text3);font-style:italic}
+.chat-input-row{display:flex;border-top:1px solid var(--border)}
+.chat-input{flex:1;background:var(--surface);border:none;outline:none;color:var(--text);font-size:14px;font-family:inherit;padding:14px 16px}
+.chat-input::placeholder{color:var(--text3)}
+.chat-send{background:linear-gradient(135deg,#7c3aed,#06b6d4);color:#fff;border:none;cursor:pointer;padding:14px 20px;font-size:13px;font-weight:600;transition:var(--transition);font-family:inherit}
+.chat-send:hover{opacity:0.9}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(20px);background:linear-gradient(135deg,rgba(22,28,46,0.97),rgba(12,15,26,0.97));border:1px solid rgba(168,85,247,0.4);color:var(--text);padding:13px 28px;border-radius:100px;font-size:14px;font-weight:600;z-index:300;opacity:0;pointer-events:none;transition:all 0.3s ease;white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,0.5),0 0 20px rgba(124,58,237,0.25);backdrop-filter:blur(16px)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .nav{display:none}.hamburger{display:block}
+  .hero{padding:72px 24px 60px}.hero-title{font-size:36px}.hero-subtitle{font-size:16px}
+  .hero-stats{gap:20px;padding:16px 24px}.stat-num{font-size:26px}
+  .agents-grid{grid-template-columns:1fr}
+  .steps-grid{flex-direction:column;align-items:stretch}
+  .step-arrow{transform:rotate(90deg);text-align:center}.step-card{max-width:100%}
+  .footer-inner{flex-direction:column;gap:32px}.footer-links{gap:32px}
+  .modal{padding:24px}
+}
+@media(max-width:480px){
+  .hero-actions{flex-direction:column;align-items:center}
+  .btn-primary,.btn-secondary{width:100%;text-align:center;justify-content:center}
+  .filter-chips{gap:6px}.chip{font-size:12px;padding:6px 12px}
+}
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header class="header">
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-icon">⚗️</div>
+      <span class="logo-text">RPS Pharma<strong>Agents</strong></span>
+    </div>
+    <nav class="nav">
+      <a href="#agents" class="nav-link">Agents</a>
+      <a href="#categories" class="nav-link">Categories</a>
+      <a href="#how-it-works" class="nav-link">How It Works</a>
+      <button class="btn-share-all" onclick="shareApp()">🔗 Share Platform</button>
+    </nav>
+    <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">☰</button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#agents" onclick="toggleMenu()">Agents</a>
+    <a href="#categories" onclick="toggleMenu()">Categories</a>
+    <a href="#how-it-works" onclick="toggleMenu()">How It Works</a>
+  </div>
+</header>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="hero-orb orb1"></div>
+    <div class="hero-orb orb2"></div>
+    <div class="hero-orb orb3"></div>
+    <div class="hero-orb orb4"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-badge">🧬 Next-Gen Pharmaceutical AI</div>
+    <h1 class="hero-title">AI Agents for the<br/><span class="gradient-text">Pharmaceutical Industry</span></h1>
+    <p class="hero-subtitle">Discover, deploy, and share specialized AI agents designed for drug discovery, clinical trials, regulatory compliance, pharmacovigilance, and more.</p>
+    <div class="hero-actions">
+      <a href="#agents" class="btn-primary">Explore Agents →</a>
+      <button class="btn-secondary" onclick="shareApp()">Share Platform</button>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-num">12</span><span class="stat-label">AI Agents</span></div>
+      <div class="stat-divider"></div>
+      <div class="stat"><span class="stat-num">6</span><span class="stat-label">Categories</span></div>
+      <div class="stat-divider"></div>
+      <div class="stat"><span class="stat-num">24/7</span><span class="stat-label">Available</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SEARCH & FILTER ── -->
+<section class="search-section" id="agents">
+  <div class="container">
+    <div class="search-bar-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput" class="search-input" placeholder="Search agents by name, capability, or keyword…" oninput="filterAgents()"/>
+      <button class="search-clear" onclick="clearSearch()" title="Clear">✕</button>
+    </div>
+    <div class="filter-chips" id="categories">
+      <button class="chip active" data-cat="all" onclick="setCategory(this,'all')">All Agents</button>
+      <button class="chip" data-cat="discovery" onclick="setCategory(this,'discovery')">🔬 Drug Discovery</button>
+      <button class="chip" data-cat="clinical" onclick="setCategory(this,'clinical')">🏥 Clinical Trials</button>
+      <button class="chip" data-cat="regulatory" onclick="setCategory(this,'regulatory')">📋 Regulatory</button>
+      <button class="chip" data-cat="safety" onclick="setCategory(this,'safety')">🛡️ Pharmacovigilance</button>
+      <button class="chip" data-cat="manufacturing" onclick="setCategory(this,'manufacturing')">🏭 Manufacturing</button>
+      <button class="chip" data-cat="market" onclick="setCategory(this,'market')">📊 Market Access</button>
+    </div>
+    <div class="results-count" id="resultsCount">Showing 12 agents</div>
+  </div>
+</section>
+
+<!-- ── AGENTS GRID ── -->
+<section class="agents-section">
+  <div class="container">
+    <div class="agents-grid" id="agentsGrid">
+
+      <!-- 1. MoleculeMapper -->
+      <div class="agent-card" data-cat="discovery" data-name="MoleculeMapper" data-tags="drug discovery molecule screening compound admet">
+        <div class="card-header" style="background:linear-gradient(135deg,#6366f1,#8b5cf6)">
+          <div class="card-icon">🧪</div><div class="card-badge">Drug Discovery</div>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">MoleculeMapper</h3>
+          <p class="card-desc">Analyzes molecular structures, predicts binding affinities, and screens compound libraries to identify promising drug candidates using AI-driven cheminformatics.</p>
+          <div class="card-tags"><span class="tag">Cheminformatics</span><span class="tag">ADMET</span><span class="tag">Lead Optimization</span></div>
+          <div class="card-capabilities">
+            <div class="cap-item">✅ Molecular docking simulation</div>
+            <div class="cap-item">✅ ADMET property prediction</div>
+            <div class="cap-item">✅ Structure-activity analysis</div>
+            <div class="cap-item">✅ Virtual screening reports</div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="card-meta"><span class="status-dot active"></span>Active</div>
+          <div class="card-actions">
+            <button class="btn-launch" onclick="launchAgent('MoleculeMapper')">Launch</button>
+            <button class="btn-share-card" onclick="shareAgent('MoleculeMapper','Drug Discovery AI for molecular screening and ADMET prediction')" title="Share">🔗</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. GenomicsGuru -->
+      <div class="agent-card" data-cat="discovery" data-name="GenomicsGuru" data-tags="genomics target identification biomarker precision medicine">
+        <div class="card-header" style="background:linear-gradient(135deg,#0ea5e9,#6366f1)">
+          <div class="card-icon">🧬</div><div class="card-badge">Drug Discovery</div>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">GenomicsGuru</h3>
+          <p class="card-desc">Mines genomic and proteomic datasets to identify novel drug targets, validate biomarkers, and map disease pathways for precision medicine applications.</p>
+          <div class="card-tags"><span class="tag">Genomics</span><span class="tag">Biomarkers</span><span class="tag">Precision Medicine</span></div>
+          <div class="card-capabilities">
+            <div class="cap-item">✅ Target identification & validation</div>
+            <div class="cap-item">✅ Pathway enrichment analysis</div>
+            <div class="cap-item">✅ Biomarker discovery</div>
+            <div class="cap-item">✅ Multi-omics integration</div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="card-meta"><span class="status-dot active"></span>Active</div>
+          <div class="card-actions">
+            <button class="btn-launch" onclick="launchAgent('GenomicsGuru')">Launch</button>
+            <button class="btn-share-card" onclick="shareAgent('GenomicsGuru','Genomics AI for target identification and biomarker discovery')" title="Share">🔗</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. TrialTracker -->
+      <div class="agent-card" data-cat="clinical" data-name="TrialTracker" data-tags="clinical trial protocol patient recruitment monitoring">
+        <div class="card-header" style="background:linear-gradient(135deg,#10b981,#0ea5e9)">
+          <div class="card-icon">🏥</div><div class="card-badge">Clinical Trials</div>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">TrialTracker</h3>
+          <p class="card-desc">Manages clinical trial workflows end-to-end — from protocol design and patient recruitment to data monitoring, adverse event tracking, and interim analysis.</p>
+          <div class="card-tags"><span class="tag">Protocol Design</span><span class="tag">EDC</span><span class="tag">Monitoring</span></div>
+          <div class="card-capabilities">
+            <div class="cap-item">✅ Protocol feasibility analysis</div>
+            <div class="cap-item">✅ Patient eligibility screening</div>
+            <div class="cap-item">✅ Real-time data monitoring</div>
+            <div class="cap-item">✅ Adverse event detection</div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="card-meta"><span class="status-dot active"></span>Active</div>
+          <div class="card-actions">
+            <button class="btn-launch" onclick="launchAgent('TrialTracker')">Launch</button>
+            <button class="btn-share-card" onclick="shareAgent('TrialTracker','Clinical Trial AI for protocol design and patient monitoring')" title="Share">🔗</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. PatientMatch -->
+      <div class="agent-card" data-cat="clinical" data-name="PatientMatch" data-tags="patient recruitment eligibility criteria enrollment EHR NLP">
+        <div class="card-header" style="background:linear-gradient(135deg,#f59e0b,#10b981)">
+          <div class="card-icon">👥</div><div class="card-badge">Clinical Trials</div>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">PatientMatch</h3>
+          <p class="card-desc">Uses NLP and EHR analysis to identify and match eligible patients to clinical trials, dramatically reducing recruitment timelines and improving diversity.</p>
+          <div class="card-tags"><span class="tag">NLP</span><span class="tag">EHR Analysis</span><span class="tag">Recruitment</span></div>
+          <div class="card-capabilities">
+            <div class="cap-item">✅ EHR data extraction</div>
+            <div class="cap-item">✅ Eligibility criteria matching</div>
+            <div class="cap-item">✅ Diversity optimization</div>
+            <div class="cap-item">✅ Enrollment forecasting</div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="card-meta"><span class="status-dot active"></span>Active</div>
+          <div class="card-actions">
+            <button class="btn-launch" onclick="launchAgent('PatientMatch')">Launch</button>
+            <button class="btn-share-card" onclick="shareAgent('PatientMatch','Patient Recruitment AI for clinical trial enrollment optimization')" title="Share">🔗</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. RegBot -->
+      <div class="agent-card" data-cat="regulatory" data-name="RegBot" data-tags="regulatory submission FDA EMA dossier compliance CTD ICH">
+        <div class="card-header" style="background:linear-gradient(135deg,#ef4444,#f59e0b)">
+          <div class="card-icon">📋</div><div class="card-badge">Regulatory</div>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">RegBot</h3>
+          <p class="card-desc">Automates regulatory submission preparation for FDA, EMA, and ICH guidelines. Drafts CTDs, checks dossier completeness, and tracks submission status.</p>
+          <div class="card-tags"><span class="tag">FDA/EMA</span><span class="tag">CTD</span><span class="tag">ICH Guidelines</span></div>
+          <div class="card-capabilities">
+            <div class="cap-item">✅ CTD module drafting</div>
+            <div class="cap-item">✅ Dossier gap analysis</div>
+            <div class="cap-item">✅ Regulatory intelligence</div>
+            <div class="cap-item">✅ Submission tracking</div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="card-meta"><span class="status-dot active"></span>Active</div>
+          <div class="card-actions">
+            <button class="btn-launch" onclick="launchAgent('RegBot')">Launch</button>
+            <button class="btn-share-card" onclick="shareAgent('RegBot','Regulatory AI for FDA/EMA submission preparation and compliance')" title="Share">🔗</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. ComplianceGuard -->
+      <div class="agent-card" data-cat="regulatory" data-name="ComplianceGuard" data-tags="GxP compliance audit SOP quality CAPA inspection">
+        <div class="card-header" style="background:linear-gradient(135deg,#8b5cf6,#ef4444)">
+          <div class="card-icon">🔒</div><div class="card-badge">Regulatory</div>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">ComplianceGuard</h3>
+          <p class="card-desc">Continuously monitors GxP compliance across operations, flags deviations, reviews SOPs, and generates audit-ready reports to ensure inspection readiness.</p>
+          <div class="card-tags"><span class="tag">GxP</span><span class="tag">Audit</span><span class="tag">SOP Review</span></div>
+          <div class="card-capabilities">
+            <div class="cap-item">✅ Real-time compliance monitoring</div>
+            <div class="cap-item">✅ SOP gap analysis</div>
+            <div class="cap-item">✅ CAPA management</div>
+            <div class="cap-item">✅ Inspection readiness scoring</div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="card-meta"><span class="status-dot active"></span>Active</div>
+          <div class="card-actions">
+            <button class="btn-launch" onclick="launchAgent('ComplianceGuard')">Launch</button>
+            <button class="btn-share-card" onclick="shareAgent('ComplianceGuard','GxP Compliance AI for audit readiness and SOP management')" title="Share">🔗</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7. SafetySignal -->
+      <div class="agent-card" data-cat="safety" data-name="SafetySignal" data-tags="pharmacovigilance adverse event signal detection safety ICSR MedDRA">
+        <div class="card-header" style="background:linear-gradient(135deg,#0ea5e9,#10b981)">
+          <div class="card-icon">🛡️</div><div class="card-badge">Pharmacovigilance</div>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">SafetySignal</h3>
+          <p class="card-desc">Processes spontaneous adverse event reports, literature, and social media to detect safety signals early, prioritize cases, and generate ICSRs automatically.</p>
+          <div class="card-tags"><span class="tag">Signal Detection</span><span class="tag">ICSR</span><span class="tag">MedDRA</span></div>
+          <div class="card-capabilities">
+            <div class="cap-item">✅ Automated ICSR processing</div>
+            <div class="cap-item">✅ Disproportionality analysis</div>
+            <div class="cap-item">✅ Literature surveillance</div>
+            <div class="cap-item">✅ PSUR/PBRER drafting</div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="card-meta"><span class="status-dot active"></span>Active</div>
+          <div class="card-actions">
+            <button class="btn-launch" onclick="launchAgent('SafetySignal')">Launch</button>
+            <button class="btn-share-card" onclick="shareAgent('SafetySignal','Pharmacovigilance AI for adverse event detection and ICSR processing')" title="Share">🔗</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8. MedLitWatch -->
+      <div class="agent-card" data-cat="safety" data-name="MedLitWatch" data-tags="literature surveillance medical PubMed Embase review safety NLP">
+        <div class="card-header" style="background:linear-gradient(135deg,#f59e0b,#ef4444)">
+          <div class="card-icon">📚</div><div class="card-badge">Pharmacovigilance</div>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">MedLitWatch</h3>
+          <p class="card-desc">Continuously scans PubMed, Embase, and global medical literature to identify safety-relevant publications, extract key data, and flag actionable findings.</p>
+          <div class="card-tags"><span class="tag">Literature Review</span><span class="tag">PubMed</span><span class="tag">NLP</span></div>
+          <div class="card-capabilities">
+            <div class="cap-item">✅ Automated literature screening</div>
+            <div class="cap-item">✅ Relevance classification</div>
+            <div class="cap-item">✅ Data extraction & summarization</div>
+            <div class="cap-item">✅ Weekly surveillance reports</div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="card-meta"><span class="status-dot active"></span>Active</div>
+          <div class="card-actions">
+            <button class="btn-launch" onclick="launchAgent('MedLitWatch')">Launch</button>
+            <button class="btn-share-card" onclick="shareAgent('MedLitWatch','Medical Literature AI for safety surveillance and data extraction')" title="Share">🔗</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 9. BatchBrain -->
+      <div class="agent-card" data-cat="manufacturing" data-name="BatchBrain" data-tags="manufacturing batch record quality control deviation OOS yield">
+        <div class="card-header" style="background:linear-gradient(135deg,#6366f1,#10b981)">
+          <div class="card-icon">🏭</div><div class="card-badge">Manufacturing</div>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">BatchBrain</h3>
+          <p class="card-desc">Analyzes batch records, detects process deviations, predicts yield outcomes, and recommends corrective actions to optimize pharmaceutical manufacturing quality.</p>
+          <div class="card-tags"><span class="tag">Batch Records</span><span class="tag">Process Analytics</span><span class="tag">QC</span></div>
+          <div class="card-capabilities">
+            <div class="cap-item">✅ Batch record review automation</div>
+            <div class="cap-item">✅ Deviation root cause analysis</div>
+            <div class="cap-item">✅ Yield prediction modeling</div>
+            <div class="cap-item">✅ OOS investigation support</div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="card-meta"><span class="status-dot active"></span>Active</div>
+          <div class="card-actions">
+            <button class="btn-launch" onclick="launchAgent('BatchBrain')">Launch</button>
+            <button class="btn-share-card" onclick="shareAgent('BatchBrain','Manufacturing AI for batch record analysis and quality control')" title="Share">🔗</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 10. SupplyChainSage -->
+      <div class="agent-card" data-cat="manufacturing" data-name="SupplyChainSage" data-tags="supply chain inventory cold chain logistics serialization forecasting">
+        <div class="card-header" style="background:linear-gradient(135deg,#10b981,#f59e0b)">
+          <div class="card-icon">🚚</div><div class="card-badge">Manufacturing</div>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">SupplyChainSage</h3>
+          <p class="card-desc">Optimizes pharmaceutical supply chains by forecasting demand, managing cold-chain logistics, detecting shortages, and ensuring serialization compliance.</p>
+          <div class="card-tags"><span class="tag">Cold Chain</span><span class="tag">Serialization</span><span class="tag">Forecasting</span></div>
+          <div class="card-capabilities">
+            <div class="cap-item">✅ Demand forecasting</div>
+            <div class="cap-item">✅ Cold chain monitoring</div>
+            <div class="cap-item">✅ Shortage risk alerts</div>
+            <div class="cap-item">✅ Serialization & track-trace</div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="card-meta"><span class="status-dot active"></span>Active</div>
+          <div class="card-actions">
+            <button class="btn-launch" onclick="launchAgent('SupplyChainSage')">Launch</button>
+            <button class="btn-share-card" onclick="shareAgent('SupplyChainSage','Supply Chain AI for pharmaceutical logistics and cold chain management')" title="Share">🔗</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 11. MarketPulse -->
+      <div class="agent-card" data-cat="market" data-name="MarketPulse" data-tags="market access pricing reimbursement HTA payer ICER">
+        <div class="card-header" style="background:linear-gradient(135deg,#8b5cf6,#0ea5e9)">
+          <div class="card-icon">📊</div><div class="card-badge">Market Access</div>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">MarketPulse</h3>
+          <p class="card-desc">Delivers real-time market access intelligence — HTA landscape analysis, payer insights, pricing benchmarks, and reimbursement strategy recommendations.</p>
+          <div class="card-tags"><span class="tag">HTA</span><span class="tag">Pricing</span><span class="tag">Reimbursement</span></div>
+          <div class="card-capabilities">
+            <div class="cap-item">✅ HTA submission support</div>
+            <div class="cap-item">✅ Payer landscape mapping</div>
+            <div class="cap-item">✅ Pricing strategy modeling</div>
+            <div class="cap-item">✅ Competitive intelligence</div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="card-meta"><span class="status-dot active"></span>Active</div>
+          <div class="card-actions">
+            <button class="btn-launch" onclick="launchAgent('MarketPulse')">Launch</button>
+            <button class="btn-share-card" onclick="shareAgent('MarketPulse','Market Access AI for HTA analysis and reimbursement strategy')" title="Share">🔗</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 12. MedAffairs AI -->
+      <div class="agent-card" data-cat="market" data-name="MedAffairs AI" data-tags="medical affairs KOL engagement publication planning MSL congress">
+        <div class="card-header" style="background:linear-gradient(135deg,#ef4444,#8b5cf6)">
+          <div class="card-icon">🤝</div><div class="card-badge">Market Access</div>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">MedAffairs AI</h3>
+          <p class="card-desc">Supports medical affairs teams with KOL mapping, publication planning, MSL field insights, and scientific communication strategy powered by AI.</p>
+          <div class="card-tags"><span class="tag">KOL Mapping</span><span class="tag">Publications</span><span class="tag">MSL Insights</span></div>
+          <div class="card-capabilities">
+            <div class="cap-item">✅ KOL identification & scoring</div>
+            <div class="cap-item">✅ Publication gap analysis</div>
+            <div class="cap-item">✅ Congress planning support</div>
+            <div class="cap-item">✅ Scientific narrative builder</div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="card-meta"><span class="status-dot active"></span>Active</div>
+          <div class="card-actions">
+            <button class="btn-launch" onclick="launchAgent('MedAffairs AI')">Launch</button>
+            <button class="btn-share-card" onclick="shareAgent('MedAffairs AI','Medical Affairs AI for KOL engagement and publication planning')" title="Share">🔗</button>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /agents-grid -->
+
+    <div class="empty-state" id="emptyState" style="display:none">
+      <div class="empty-icon">🔍</div>
+      <h3>No agents found</h3>
+      <p>Try a different search term or category filter.</p>
+      <button class="btn-primary" onclick="clearSearch()">Clear Search</button>
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW IT WORKS ── -->
+<section class="how-section" id="how-it-works">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">How It Works</h2>
+      <p class="section-sub">Deploy pharma AI agents in three simple steps</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">01</div>
+        <div class="step-icon">🔍</div>
+        <h3>Discover</h3>
+        <p>Browse and search our library of specialized pharmaceutical AI agents. Filter by category to find exactly what your team needs.</p>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step-card">
+        <div class="step-num">02</div>
+        <div class="step-icon">⚙️</div>
+        <h3>Configure</h3>
+        <p>Launch your chosen agent and configure it with your data sources, workflows, and compliance requirements in minutes.</p>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step-card">
+        <div class="step-num">03</div>
+        <div class="step-icon">🚀</div>
+        <h3>Deploy & Share</h3>
+        <p>Deploy agents across your organization and share them with colleagues, partners, or stakeholders via a simple link.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="logo">
+          <div class="logo-icon">⚗️</div>
+          <span class="logo-text">RPS Pharma<strong>Agents</strong></span>
+        </div>
+        <p>AI-powered intelligence for the pharmaceutical industry.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>Agents</h4>
+          <a href="#">Drug Discovery</a>
+          <a href="#">Clinical Trials</a>
+          <a href="#">Regulatory</a>
+        </div>
+        <div class="footer-col">
+          <h4>Platform</h4>
+          <a href="#">Documentation</a>
+          <a href="#">API Access</a>
+          <a href="#">Security</a>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <a href="#">About</a>
+          <a href="#">Contact</a>
+          <a href="#">Privacy</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-privacy">
+      <div class="privacy-statement">
+        <h5>🔒 Privacy Statement</h5>
+        <p>
+          <strong>© 2026 RPS PharmaAgents.</strong> All rights reserved. This platform and its AI agents are provided for informational and operational support purposes within the pharmaceutical industry. All data processed through RPS PharmaAgents is handled in strict accordance with applicable data protection regulations, including GDPR, HIPAA, and ICH E6(R2) guidelines. We do not sell, share, or disclose personal or proprietary data to third parties without explicit consent. Agent interactions may be logged for quality assurance and compliance purposes. For data requests, corrections, or deletion inquiries, please contact our <a href="#">Data Privacy Officer</a>. By using this platform, you agree to our <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>.
+        </p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 <strong>RPS PharmaAgents</strong> — Built for the pharmaceutical industry.</p>
+      <button class="btn-share-footer" onclick="shareApp()">🔗 Share Platform</button>
+    </div>
+  </div>
+</footer>
+
+<!-- ── MODAL ── -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
+  <div class="modal" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-icon" id="modalIcon"></div>
+    <h2 class="modal-title" id="modalTitle"></h2>
+    <p class="modal-desc" id="modalDesc"></p>
+    <div class="modal-chat">
+      <div class="chat-messages" id="chatMessages"></div>
+      <div class="chat-input-row">
+        <input type="text" id="chatInput" class="chat-input" placeholder="Ask this agent anything…" onkeydown="if(event.key==='Enter')sendMessage()"/>
+        <button class="chat-send" onclick="sendMessage()">Send ↑</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── TOAST ── -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* ── Agent Knowledge Base ── */
+const agentKnowledge = {
+  'MoleculeMapper': {
+    icon: '🧪', desc: 'AI-powered molecular screening and ADMET prediction agent.',
+    responses: [
+      "I can analyze your compound's molecular structure and predict binding affinity to the target protein. Please share the SMILES notation or upload an SDF file.",
+      "Based on my ADMET analysis, this compound shows favorable oral bioavailability (F > 60%) but may have CYP3A4 inhibition concerns. I recommend running a metabolic stability assay.",
+      "I've screened your library of 50,000 compounds against the target. Top 10 hits ranked by docking score are ready. Shall I generate the full report?",
+      "The Lipinski Rule of Five analysis shows: MW=412 Da ✅, LogP=2.8 ✅, HBD=2 ✅, HBA=6 ✅ — this compound has good drug-likeness.",
+      "I've identified 3 structural analogs with improved selectivity profiles. Would you like me to run a lead optimization cycle?"
+    ]
+  },
+  'GenomicsGuru': {
+    icon: '🧬', desc: 'Genomics and target identification AI for precision medicine.',
+    responses: [
+      "I've analyzed the GWAS data and identified 7 statistically significant SNPs associated with your disease phenotype (p < 5×10⁻⁸). Shall I map these to druggable targets?",
+      "Pathway enrichment analysis reveals significant upregulation of the PI3K/AKT/mTOR pathway in your patient cohort. This aligns with 3 approved drugs and 12 clinical candidates.",
+      "I've cross-referenced your target list against the Human Protein Atlas and ChEMBL. Target EGFR shows high tissue specificity and excellent tractability score of 0.87.",
+      "Multi-omics integration complete. Combining transcriptomics, proteomics, and metabolomics data reveals a novel biomarker signature with 94% sensitivity for early detection.",
+      "I've identified 2 novel gene fusions in the RNA-seq data that may represent actionable targets. Shall I generate a target validation report?"
+    ]
+  },
+  'TrialTracker': {
+    icon: '🏥', desc: 'End-to-end clinical trial management and monitoring AI.',
+    responses: [
+      "Protocol feasibility analysis complete. Based on site capabilities and patient population data, I estimate 18-month enrollment for your Phase III trial across 45 sites.",
+      "I've detected a data anomaly at Site 12 — 3 patients show out-of-range lab values that weren't flagged in the EDC. I recommend a targeted monitoring visit.",
+      "Interim analysis ready: The primary endpoint shows a hazard ratio of 0.68 (95% CI: 0.52–0.89, p=0.004). The DSMB threshold for early stopping has been crossed.",
+      "I've reviewed the protocol amendment and identified 5 sections requiring IRB notification and 2 requiring full re-consent. Shall I draft the amendment documentation?",
+      "Site performance dashboard updated: 8 sites are on track, 3 are behind enrollment targets. I recommend activating 2 backup sites to maintain timeline."
+    ]
+  },
+  'PatientMatch': {
+    icon: '👥', desc: 'AI-powered patient recruitment and eligibility matching.',
+    responses: [
+      "EHR analysis complete across 3 hospital networks. I've identified 847 potentially eligible patients for your trial. After applying all inclusion/exclusion criteria, 312 are pre-qualified.",
+      "Diversity analysis: Current pre-qualified pool is 68% male, 72% Caucasian. I recommend targeting 4 additional sites to improve demographic representation.",
+      "I've sent pre-screening notifications to 312 patients via their patient portals. Response rate so far: 41% (128 patients). 89 have agreed to a screening visit.",
+      "Enrollment forecast updated: At current rate, you'll reach target enrollment (n=200) in 14 months. Activating 2 additional sites could reduce this to 10 months.",
+      "I've identified a cluster of 45 eligible patients at a site not currently in your network. Would you like me to initiate site qualification for this location?"
+    ]
+  },
+  'RegBot': {
+    icon: '📋', desc: 'Regulatory submission AI for FDA, EMA, and ICH compliance.',
+    responses: [
+      "CTD Module 2.7.3 (Summary of Clinical Efficacy) draft is complete. I've cross-referenced all data against the clinical study reports and flagged 3 inconsistencies for your review.",
+      "Dossier gap analysis complete. Your NDA package is 94% complete. Missing items: updated stability data for 36-month timepoint and a pediatric study waiver justification.",
+      "FDA has issued a new guidance on AI/ML-based drug development (March 2026). I've analyzed the impact on your submission — 2 sections of your IND will need updating.",
+      "I've prepared responses to all 12 FDA information requests. The complete response package is ready for QC review before submission.",
+      "Regulatory intelligence update: EMA approved 3 drugs in your therapeutic area this quarter. I've analyzed their labels for precedent-setting language relevant to your submission."
+    ]
+  },
+  'ComplianceGuard': {
+    icon: '🔒', desc: 'GxP compliance monitoring and audit readiness AI.',
+    responses: [
+      "Compliance scan complete across 847 SOPs. I've identified 23 documents that are overdue for periodic review and 5 that reference superseded regulatory guidance.",
+      "Deviation trend analysis: Facility B has seen a 34% increase in environmental monitoring deviations over the past 90 days. Root cause appears to be HVAC maintenance gaps.",
+      "Inspection readiness score: 87/100. Key gaps: 3 open CAPAs past due date, 1 validation protocol pending approval. I've drafted a remediation plan.",
+      "I've reviewed the batch record for Lot #2024-0891 and found a documentation gap in the in-process testing section. This requires a formal deviation report.",
+      "Annual product review for Product X is complete. All quality attributes are within specification. I've generated the APR report ready for QA approval."
+    ]
+  },
+  'SafetySignal': {
+    icon: '🛡️', desc: 'Pharmacovigilance AI for adverse event detection and reporting.',
+    responses: [
+      "Signal detection analysis complete. I've identified a new potential signal for hepatotoxicity with your compound (ROR=3.2, 95% CI: 1.8–5.7). Recommend escalation to the Safety Committee.",
+      "I've processed 1,247 ICSRs this week. 89 were classified as serious, 12 as unexpected. All expedited reports have been submitted to FDA within the 15-day deadline.",
+      "Literature surveillance identified 3 new publications relevant to your product's safety profile. One case series describes a potential drug-drug interaction not in the current label.",
+      "PSUR preparation is 78% complete. I've compiled all safety data from the reporting period. The benefit-risk evaluation section needs your medical review.",
+      "Social media monitoring flagged an unusual cluster of fatigue reports on patient forums. I've cross-referenced with the FAERS database — this warrants further investigation."
+    ]
+  },
+  'MedLitWatch': {
+    icon: '📚', desc: 'Medical literature surveillance AI for safety and evidence monitoring.',
+    responses: [
+      "Weekly literature scan complete: 2,847 articles screened across PubMed, Embase, and WHO databases. 34 were classified as relevant, 8 as high priority for safety review.",
+      "I've identified a meta-analysis published in NEJM that includes 3 trials of your compound. The pooled safety data shows a favorable profile consistent with your label.",
+      "Alert: A case report in Drug Safety journal describes a severe adverse reaction potentially related to your product. I've extracted the full case details for medical review.",
+      "Evidence synthesis complete for your indication. I've mapped 127 relevant publications to your clinical development program and identified 3 evidence gaps.",
+      "I've set up automated alerts for 15 MeSH terms related to your compound. You'll receive real-time notifications for any new publications matching your surveillance criteria."
+    ]
+  },
+  'BatchBrain': {
+    icon: '🏭', desc: 'Manufacturing AI for batch record analysis and quality control.',
+    responses: [
+      "Batch record review complete for Lot #2024-1205. All critical process parameters were within specification. I've flagged 2 minor documentation gaps for correction.",
+      "Deviation investigation for Lot #2024-1198: Root cause analysis points to a calibration drift in the granulation endpoint sensor. I've drafted the CAPA with 5 corrective actions.",
+      "Yield prediction model updated with Q3 data. Expected yield for next batch: 94.2% (±1.8%). The model identified mixing time as the highest-impact process parameter.",
+      "OOS investigation complete for the dissolution test failure. The root cause is attributed to raw material variability in the active ingredient. Supplier notification drafted.",
+      "Process capability analysis: Cpk for tablet hardness = 1.42, well above the 1.33 threshold. All critical quality attributes show stable, capable processes."
+    ]
+  },
+  'SupplyChainSage': {
+    icon: '🚚', desc: 'Supply chain AI for pharmaceutical logistics and cold chain management.',
+    responses: [
+      "Demand forecast updated for Q4 2026: Projected demand is 2.3M units, up 18% from Q3. I recommend increasing production orders by 15% to maintain 8-week safety stock.",
+      "Cold chain alert: Shipment #SC-2024-0445 experienced a temperature excursion (2.8°C above limit) for 4 hours during transit. I've initiated the impact assessment protocol.",
+      "Shortage risk analysis: API supplier in India is showing 6-week lead time delays. Risk of stockout in 90 days is 73%. I recommend qualifying an alternative supplier immediately.",
+      "Serialization compliance check complete: 99.7% of units in the current batch are correctly serialized. 847 units require re-labeling before distribution.",
+      "Supply chain optimization complete: Consolidating 3 distribution centers into 2 regional hubs could reduce logistics costs by 22% while maintaining 98.5% on-time delivery."
+    ]
+  },
+  'MarketPulse': {
+    icon: '📊', desc: 'Market access AI for HTA analysis and reimbursement strategy.',
+    responses: [
+      "HTA landscape analysis complete for your target markets. NICE (UK) and HAS (France) have approved 4 similar mechanisms of action — average time to reimbursement: 18 months.",
+      "Payer research synthesis: 73% of US payers would require step therapy through 2 prior treatments. I recommend a patient access program to address this barrier.",
+      "Pricing benchmark analysis: Comparable products in your class are priced at $85,000–$140,000/year in the US. Value-based pricing model suggests an optimal launch price of $112,000.",
+      "Competitive intelligence update: Competitor X filed for approval in EU last month. Their label is narrower than yours — this is a differentiation opportunity in your HTA dossier.",
+      "I've drafted the AMCP dossier framework for your product. The economic model shows an ICER of $48,000/QALY, well below the $150,000 willingness-to-pay threshold."
+    ]
+  },
+  'MedAffairs AI': {
+    icon: '🤝', desc: 'Medical affairs AI for KOL engagement and scientific communication.',
+    responses: [
+      "KOL mapping complete for your therapeutic area. I've identified 127 key opinion leaders globally, ranked by publication impact, clinical trial participation, and speaking activity.",
+      "Publication gap analysis: Your compound has strong Phase III data but limited real-world evidence publications. I recommend prioritizing 3 RWE manuscripts for submission in H1 2026.",
+      "Congress planning: ASH 2026 abstract deadline is September 15. I've identified 4 data packages suitable for submission and drafted abstract outlines for your review.",
+      "MSL field insights synthesized from 847 HCP interactions this quarter. Top unmet need: clearer guidance on patient selection criteria. I recommend a scientific exchange program.",
+      "Scientific narrative updated with the latest Phase III data. The core value story now emphasizes 3 differentiated outcomes vs. standard of care. Ready for medical review."
+    ]
+  }
+};
+
+/* ── State ── */
+let currentCategory = 'all', currentSearch = '', activeAgent = null;
+
+/* ── Filter ── */
+function filterAgents() {
+  currentSearch = document.getElementById('searchInput').value.toLowerCase().trim();
+  applyFilters();
+}
+function setCategory(el, cat) {
+  currentCategory = cat;
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  applyFilters();
+}
+function applyFilters() {
+  const cards = document.querySelectorAll('.agent-card');
+  let visible = 0;
+  cards.forEach(card => {
+    const catMatch = currentCategory === 'all' || card.dataset.cat === currentCategory;
+    const searchStr = (card.dataset.name + ' ' + card.dataset.tags + ' ' + card.querySelector('.card-desc').textContent).toLowerCase();
+    const searchMatch = !currentSearch || searchStr.includes(currentSearch);
+    if (catMatch && searchMatch) { card.style.display = ''; card.style.animationDelay = (visible * 0.05) + 's'; visible++; }
+    else { card.style.display = 'none'; }
+  });
+  document.getElementById('resultsCount').textContent = visible === 1 ? 'Showing 1 agent' : `Showing ${visible} agents`;
+  document.getElementById('emptyState').style.display = visible === 0 ? 'block' : 'none';
+}
+function clearSearch() { document.getElementById('searchInput').value = ''; currentSearch = ''; applyFilters(); }
+
+/* ── Mobile Menu ── */
+function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
+
+/* ── Modal ── */
+function launchAgent(name) {
+  const agent = agentKnowledge[name]; if (!agent) return;
+  activeAgent = name;
+  document.getElementById('modalIcon').textContent = agent.icon;
+  document.getElementById('modalTitle').textContent = name;
+  document.getElementById('modalDesc').textContent = agent.desc;
+  document.getElementById('chatMessages').innerHTML = '';
+  addAgentMessage(`Hello! I'm ${name}. ${agent.responses[0]}`);
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => document.getElementById('chatInput').focus(), 300);
+}
+function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); document.body.style.overflow = ''; activeAgent = null; }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+/* ── Chat ── */
+function sendMessage() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim(); if (!text || !activeAgent) return;
+  addUserMessage(text); input.value = '';
+  const typingId = addTypingIndicator();
+  setTimeout(() => {
+    removeTypingIndicator(typingId);
+    const responses = agentKnowledge[activeAgent].responses;
+    addAgentMessage(responses[Math.floor(Math.random() * responses.length)]);
+  }, 900 + Math.random() * 600);
+}
+function addUserMessage(text) { const msgs = document.getElementById('chatMessages'); const div = document.createElement('div'); div.className = 'chat-msg user'; div.textContent = text; msgs.appendChild(div); msgs.scrollTop = msgs.scrollHeight; }
+function addAgentMessage(text) { const msgs = document.getElementById('chatMessages'); const div = document.createElement('div'); div.className = 'chat-msg agent'; div.textContent = text; msgs.appendChild(div); msgs.scrollTop = msgs.scrollHeight; }
+function addTypingIndicator() { const msgs = document.getElementById('chatMessages'); const div = document.createElement('div'); const id = 'typing-' + Date.now(); div.id = id; div.className = 'chat-msg agent typing'; div.textContent = '● ● ●'; msgs.appendChild(div); msgs.scrollTop = msgs.scrollHeight; return id; }
+function removeTypingIndicator(id) { const el = document.getElementById(id); if (el) el.remove(); }
+
+/* ── Share ── */
+function shareApp() {
+  const data = { title: 'RPS PharmaAgents', text: 'Discover 12 specialized AI agents for the pharmaceutical industry.', url: window.location.href };
+  if (navigator.share) { navigator.share(data).catch(() => copyToClipboard(window.location.href)); }
+  else { copyToClipboard(window.location.href); }
+}
+function shareAgent(name, desc) {
+  const url = window.location.href;
+  if (navigator.share) { navigator.share({ title: name, text: desc, url }).catch(() => copyToClipboard(`${name} — ${desc}\n${url}`)); }
+  else { copyToClipboard(`${name} — ${desc}\n${url}`); }
+}
+function copyToClipboard(text) {
+  if (navigator.clipboard) { navigator.clipboard.writeText(text).then(() => showToast('🔗 Link copied to clipboard!')); }
+  else { const ta = document.createElement('textarea'); ta.value = text; ta.style.cssText = 'position:fixed;opacity:0'; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); showToast('🔗 Link copied to clipboard!'); }
+}
+
+/* ── Toast ── */
+let toastTimer = null;
+function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('show'), 3000); }
+
+/* ── Smooth Scroll ── */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => { const target = document.querySelector(a.getAttribute('href')); if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); } });
+});
+
+/* ── Init ── */
+applyFilters();
+</script>
+</body>
+</html>
